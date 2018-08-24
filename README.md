@@ -51,3 +51,6 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
   }
 ```javascript
 
+
+## 模块加载
+主要是css，js还有一些文件的读取配置，通过正则表达试匹配文件名，然后加载对应的模块，最终编译出对应的文件处理
