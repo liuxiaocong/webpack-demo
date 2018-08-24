@@ -56,7 +56,7 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
 
 ### 添加css加载支持：npm install --save-dev style-loader css-loader
 可以通过import './style.css' 加载css。
-需要在config文件里指出css文件的匹配正则（通过css loader加载css，否则无法识别import xx.css这样的加载方式）
+需要在config文件里指出css文件的匹配正则（通过css loader识别css语法，进行整体编译）
 ```javascript
   const path = require('path');
 
@@ -78,4 +78,14 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
 +     ]
 +   }
   };
+```
+假如使用css加载模块，会出现下面报错，因为无法识别css，没办法进行整体编译：
+```
+ERROR in ./src/style.css 1:0
+Module parse failed: Unexpected token (1:0)
+You may need an appropriate loader to handle this file type.
+> .hello {
+|   color: red;
+|   background: url('./icon.jpg');
+ @ ./src/index.js 2:0-21
 ```
