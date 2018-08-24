@@ -89,3 +89,38 @@ You may need an appropriate loader to handle this file type.
 |   background: url('./icon.jpg');
  @ ./src/index.js 2:0-21
 ```
+
+比较常用的是file-loader，可以用户图片文件等的加载，另外还有xml-loader，加载并识别xml文件转换成json，npm install --save-dev file-loader
+图片通过file-loader来加载
+```javascript
+       {
+         test: /\.(png|svg|jpg|gif)$/,
+         use: [
+           'file-loader'
+         ]
+       }
+```
+file-loader同时也可以用于字体加载：
+```javascript
+       {
+         test: /\.(woff|woff2|eot|ttf|otf)$/,
+         use: [
+           'file-loader'
+         ]
+       }
+```
+```javascript
++ @font-face {
++   font-family: 'MyFont';
++   src:  url('./my-font.woff2') format('woff2'),
++         url('./my-font.woff') format('woff');
++   font-weight: 600;
++   font-style: normal;
++ }
+
+  .hello {
+    color: red;
++   font-family: 'MyFont';
+    background: url('./icon.png');
+  }
+```
