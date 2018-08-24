@@ -49,8 +49,33 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
       "lodash": "^4.17.5"
     }
   }
-```javascript
-
+```
 
 ## 模块加载
 主要是css，js还有一些文件的读取配置，通过正则表达试匹配文件名，然后加载对应的模块，最终编译出对应的文件处理
+
+### 添加css加载支持：npm install --save-dev style-loader css-loader
+可以通过import './style.css' 加载css。
+需要在config文件里指出css文件的匹配正则（通过css loader加载css，否则无法识别import xx.css这样的加载方式）
+```javascript
+  const path = require('path');
+
+  module.exports = {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    },
++   module: {
++     rules: [
++       {
++         test: /\.css$/,
++         use: [
++           'style-loader',
++           'css-loader'
++         ]
++       }
++     ]
++   }
+  };
+```
