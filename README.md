@@ -56,7 +56,7 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
 
 ### 添加css加载支持：npm install --save-dev style-loader css-loader
 可以通过import './style.css' 加载css。
-需要在config文件里指出css文件的匹配正则（通过css loader加载css，否则无法识别import xx.css这样的加载方式）
+需要在config文件里指出css文件的匹配正则（通过css loader识别css语法，进行整体编译）
 ```javascript
   const path = require('path');
 
@@ -78,4 +78,49 @@ npm可以在scripts里加上build配置，npm run build则使用webpack构建项
 +     ]
 +   }
   };
+```
+假如使用css加载模块，会出现下面报错，因为无法识别css，没办法进行整体编译：
+```
+ERROR in ./src/style.css 1:0
+Module parse failed: Unexpected token (1:0)
+You may need an appropriate loader to handle this file type.
+> .hello {
+|   color: red;
+|   background: url('./icon.jpg');
+ @ ./src/index.js 2:0-21
+```
+
+比较常用的是file-loader，可以用户图片文件等的加载，另外还有xml-loader，加载并识别xml文件转换成json，npm install --save-dev file-loader
+图片通过file-loader来加载
+```javascript
+       {
+         test: /\.(png|svg|jpg|gif)$/,
+         use: [
+           'file-loader'
+         ]
+       }
+```
+file-loader同时也可以用于字体加载：
+```javascript
+       {
+         test: /\.(woff|woff2|eot|ttf|otf)$/,
+         use: [
+           'file-loader'
+         ]
+       }
+```
+```javascript
++ @font-face {
++   font-family: 'MyFont';
++   src:  url('./my-font.woff2') format('woff2'),
++         url('./my-font.woff') format('woff');
++   font-weight: 600;
++   font-style: normal;
++ }
+
+  .hello {
+    color: red;
++   font-family: 'MyFont';
+    background: url('./icon.png');
+  }
 ```
