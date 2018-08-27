@@ -126,10 +126,13 @@ file-loader同时也可以用于字体加载：
 ```
 
 ### webpack.config.js里面设置 devtool: 'inline-source-map',负责定位到js文件
+
 ### package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
+
 ### npm install --save-dev webpack-dev-server， webpack.config.js里面，负责刷新网页（待确定）
 ```javascript
 devServer: {
      contentBase: './dist'
    },
 ```
+同时设置package.json， "start": "webpack-dev-server --open"， 这是常规app应用，包括了webpack --watch的功能
