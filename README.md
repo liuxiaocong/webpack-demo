@@ -227,7 +227,9 @@ print.js:3 Uncaught TypeError: console.logs is not a function
 ```
 点击可以定位到错误的js文件
 
-### package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
+### 自动编译刷新工具有3种选择：
+
+#### 1, webpack's Watch Mode: package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
 package.json文件内容为：
 ```javascript
 {
@@ -265,7 +267,7 @@ package.json文件内容为：
 }
 ```
 
-### npm install --save-dev webpack-dev-server， webpack.config.js里面，负责刷新网页（待确定）
+#### 2 webpack-dev-server: npm install --save-dev webpack-dev-server， webpack.config.js里面，负责刷新网页（待确定）
 ```javascript
 devServer: {
      contentBase: './dist'
