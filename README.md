@@ -210,6 +210,8 @@ webpack.config.js 修改为：
   };
 ```
 
+## 实际开发使用
+
 ### webpack.config.js里面设置 devtool: 'inline-source-map',负责定位到js文件
 
 ### package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
