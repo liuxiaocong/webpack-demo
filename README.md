@@ -267,10 +267,17 @@ package.json文件内容为：
 }
 ```
 
-#### 2 webpack-dev-server: npm install --save-dev webpack-dev-server， webpack.config.js里面，负责刷新网页（待确定）
+#### 2 webpack-dev-server，自动编译，自动刷新
+安装插件npm install --save-dev webpack-dev-server
+webpack.config.js里面增加
 ```javascript
 devServer: {
      contentBase: './dist'
    },
 ```
+
 同时设置package.json， "start": "webpack-dev-server --open"， 这是常规app应用，包括了webpack --watch的功能
+
+
+#### 3 webpack-dev-middleware，实际上2说的webpack-dev-server也是使用了这个方式，只是已经封装好给你使用而已
+
