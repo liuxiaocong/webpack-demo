@@ -280,4 +280,86 @@ devServer: {
 
 
 #### 3 webpack-dev-middleware，实际上2说的webpack-dev-server也是使用了这个方式，只是已经封装好给你使用而已
+可以自定义服务器完成编译刷新工作，以express为例子，首先是安装：npm install --save-dev express webpack-dev-middleware
+修改 webpack.config.js，添加publicPath设置，保证资源文件的正确获取
+```javascript
+const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+      contentBase: './dist'
+    },
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new HtmlWebpackPlugin({
+        title: 'Output Management'
+      })
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist'),
++     publicPath: '/'
+    }
+  };
+```
+构建服务器：server.js
+```javascript
+const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+
+const app = express();
+const config = require('./webpack.config.js');
+const compiler = webpack(config);
+
+// Tell express to use the webpack-dev-middleware and use the webpack.config.js
+// configuration file as a base.
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath
+}));
+
+// Serve the files on port 3000.
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!\n');
+});
+```
+package.json添加配置，（也可以对应到npm start下）
+```javascript
+{
+    "name": "development",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack.config.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "watch": "webpack --watch",
+      "start": "webpack-dev-server --open",
++     "server": "node server.js",
+      "build": "webpack"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "clean-webpack-plugin": "^0.1.16",
+      "css-loader": "^0.28.4",
+      "csv-loader": "^2.1.1",
+      "express": "^4.15.3",
+      "file-loader": "^0.11.2",
+      "html-webpack-plugin": "^2.29.0",
+      "style-loader": "^0.18.2",
+      "webpack": "^3.0.0",
+      "webpack-dev-middleware": "^1.12.0",
+      "xml-loader": "^1.2.1"
+    }
+  }
+```
+运行npm run server
 
