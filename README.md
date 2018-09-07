@@ -279,7 +279,7 @@ devServer: {
 同时设置package.json， "start": "webpack-dev-server --open"， 这是常规app应用，包括了webpack --watch的功能
 
 
-#### 3 webpack-dev-middleware，实际上2说的webpack-dev-server也是使用了这个方式，只是已经封装好给你使用而已
+#### 3 webpack-dev-middleware，自动编译，手动刷新, 实际上2说的webpack-dev-server也是使用了这个方式，只是已经封装好给你使用而已
 可以自定义服务器完成编译刷新工作，以express为例子，首先是安装：npm install --save-dev express webpack-dev-middleware
 修改 webpack.config.js，添加publicPath设置，保证资源文件的正确获取
 ```javascript
