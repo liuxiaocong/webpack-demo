@@ -125,6 +125,8 @@ file-loader同时也可以用于字体加载：
   }
 ```
 
+## 输出管理（Output Management）
+
 ### webpack.config.js里面设置 devtool: 'inline-source-map',负责定位到js文件
 
 ### package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
