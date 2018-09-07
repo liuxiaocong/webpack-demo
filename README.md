@@ -126,6 +126,89 @@ file-loader同时也可以用于字体加载：
 ```
 
 ## 输出管理（Output Management）
+### 生成加载多个js文件
+之前说的都是只有一个js的情况，假如有多个js文件需要加载，则需要进行配置，以html为例子：
+```html
+<!doctype html>
+  <html>
+    <head>
+-     <title>Asset Management</title>
++     <title>Output Management</title>
++     <script src="./print.bundle.js"></script>
+    </head>
+    <body>
+-     <script src="./bundle.js"></script>
++     <script src="./app.bundle.js"></script>
+    </body>
+  </html>
+```
+webpack.config.js对应修改为：
+```javascript
+const path = require('path');
+
+  module.exports = {
+-   entry: './src/index.js',
++   entry: {
++     app: './src/index.js',
++     print: './src/print.js'
++   },
+    output: {
+-     filename: 'bundle.js',
++     filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+
+```
+运行后将在dist目录生成print.bundle.js，和app.bundle.js
+
+### 通过HtmlWebpackPlugin设置html的生成规则，以修改title为例子：
+先安装：npm install --save-dev html-webpack-plugin
+修改webpack.config.js
+```javascript
+const path = require('path');
++ const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
++   plugins: [
++     new HtmlWebpackPlugin({
++       title: 'Output Management'
++     })
++   ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+```
+### 其他插件：npm install --save-dev clean-webpack-plugin，用户每次构建前情况dist目录。
+webpack.config.js 修改为：
+```javascript
+ const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
++ const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
+    plugins: [
++     new CleanWebpackPlugin(['dist']),
+      new HtmlWebpackPlugin({
+        title: 'Output Management'
+      })
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+```
 
 ### webpack.config.js里面设置 devtool: 'inline-source-map',负责定位到js文件
 
