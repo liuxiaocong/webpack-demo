@@ -213,8 +213,57 @@ webpack.config.js 修改为：
 ## 实际开发使用
 
 ### webpack.config.js里面设置 devtool: 'inline-source-map',负责定位到js文件
+print.js
+```javascript
+export default function printMe() {
+  //console.log('I get called from print.js!');
+  console.logs('I get called from print.js！');
+}
+```
+错误的js代码console.logs，运行时可以在chrome的console log里发现
+```
+print.js:3 Uncaught TypeError: console.logs is not a function
+    at HTMLButtonElement.e (print.js:3)
+```
+点击可以定位到错误的js文件
 
 ### package.json里面增加"watch"参数: "webpack --watch",负责监控变化，自动编译，但需要手动刷新
+package.json文件内容为：
+```javascript
+{
+  "name": "webpack-demo",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "server": "node server.js",
+    "start": "webpack-dev-server --open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "csv-loader": "^3.0.2",
+    "express": "^4.16.3",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.22.1",
+    "webpack": "^4.17.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.2.0",
+    "webpack-dev-server": "^3.1.6",
+    "xml-loader": "^1.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
+  }
+}
+```
 
 ### npm install --save-dev webpack-dev-server， webpack.config.js里面，负责刷新网页（待确定）
 ```javascript
