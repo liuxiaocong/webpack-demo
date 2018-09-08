@@ -363,3 +363,5 @@ package.json添加配置，（也可以对应到npm start下）
 ```
 运行npm run server
 
+### style-loader实际上用的是module.hot.accept功能
+
