@@ -361,7 +361,31 @@ package.json添加配置，（也可以对应到npm start下）
     }
   }
 ```
-运行npm run server
+
+#### 另外也可以借助 webpack-dev-server自己构建服务器，自动编译，自动刷新
+dev.server.js文件如下
+```javascript
+const webpackDevServer = require('webpack-dev-server');
+const webpack = require('webpack');
+
+const config = require('./webpack.config.js');
+const options = {
+  contentBase: './dist',
+  hot: true,
+  host: 'localhost'
+};
+
+webpackDevServer.addDevServerEntrypoints(config, options);
+const compiler = webpack(config);
+const server = new webpackDevServer(compiler, options);
+
+server.listen(5000, 'localhost', () => {
+  console.log('dev server listening on port 5000');
+});
+```
+运行node dev.server.js，效果跟2是一致的
+
+## HMR（Hot Module Replacement）入门
 
 ### style-loader实际上用的是module.hot.accept功能
 
