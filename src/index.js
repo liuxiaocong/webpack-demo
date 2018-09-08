@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import printMe from './print.js';
+
 function component() {
   let element = document.createElement('div');
   var btn = document.createElement('button');
@@ -10,6 +11,13 @@ function component() {
   btn.onclick = printMe;
   element.appendChild(btn);
   return element;
+}
+
+if (module.hot) {
+  module.hot.accept('./print.js', function() {
+    console.log('Accepting the updated printMe module!');
+    printMe();
+  });
 }
 
 document.body.appendChild(component());
