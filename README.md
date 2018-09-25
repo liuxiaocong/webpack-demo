@@ -388,4 +388,67 @@ server.listen(5000, 'localhost', () => {
 ## HMR（Hot Module Replacement）入门
 
 ### style-loader实际上用的是module.hot.accept功能
+### webpack开启HMR支持
+```javascript
+const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
++ const webpack = require('webpack');
 
+  module.exports = {
+    entry: {
+-      app: './src/index.js',
+-      print: './src/print.js'
++      app: './src/index.js'
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+      contentBase: './dist',
++     hot: true
+    },
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new HtmlWebpackPlugin({
+        title: 'Hot Module Replacement'
+      }),
++     new webpack.HotModuleReplacementPlugin()
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+```
+index.js文件检测print.js的更新，对应做出页面更改:
+```javascript
+import _ from 'lodash';
+  import printMe from './print.js';
+
+  function component() {
+    var element = document.createElement('div');
+    var btn = document.createElement('button');
+
+    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+
+    btn.innerHTML = 'Click me and check the console!';
+    btn.onclick = printMe;  // onclick event is bind to the original printMe function
+
+    element.appendChild(btn);
+
+    return element;
+  }
+
+- document.body.appendChild(component());
++ let element = component(); // Store the element to re-render on print.js changes
++ document.body.appendChild(element);
+
+  if (module.hot) {
+    module.hot.accept('./print.js', function() {
+      console.log('Accepting the updated printMe module!');
+-     printMe();
++     document.body.removeChild(element);
++     element = component(); // Re-render the "component" to update the click handler
++     document.body.appendChild(element);
+    })
+  }
+```
